@@ -1,0 +1,771 @@
+/* ========================================
+   ГОРОД И МАГАЗИНЫ
+======================================== */
+
+/* Оверлей города */
+.city-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(26, 20, 16, 0.95), rgba(44, 36, 22, 0.95));
+    z-index: 5000;
+    overflow-y: auto;
+    animation: fadeIn 0.5s;
+    /* УБРАНО: pointer-events: none; */
+}
+
+.city-welcome {
+    text-align: center;
+    padding: 40px 20px 20px;
+    background: linear-gradient(180deg, rgba(184, 115, 51, 0.2), transparent);
+}
+
+.city-welcome h1 {
+    font-size: 48px;
+    color: var(--gear-gold);
+    text-shadow: 0 0 30px rgba(212, 175, 55, 0.8);
+    margin-bottom: 10px;
+    letter-spacing: 6px;
+}
+
+.city-welcome p {
+    color: var(--brass);
+    font-size: 18px;
+    font-family: 'Orbitron', sans-serif;
+}
+
+/* Локации в городе */
+.city-locations {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    padding: 40px;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.city-location {
+    background: linear-gradient(135deg, rgba(44, 36, 22, 0.9), rgba(26, 20, 16, 0.9));
+    border: 3px solid var(--copper);
+    border-radius: 15px;
+    padding: 25px;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.city-location::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.2), transparent);
+    transition: left 0.5s;
+}
+
+.city-location:hover {
+    transform: translateY(-5px);
+    border-color: var(--gear-gold);
+    box-shadow: 0 10px 30px rgba(184, 115, 51, 0.5);
+}
+
+.city-location:hover::before {
+    left: 100%;
+}
+
+.location-icon {
+    font-size: 60px;
+    filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.5));
+}
+
+.location-info {
+    flex: 1;
+}
+
+.location-info h3 {
+    font-size: 24px;
+    color: var(--gear-gold);
+    margin-bottom: 8px;
+}
+
+.location-info p {
+    color: var(--brass);
+    margin-bottom: 5px;
+}
+
+.location-info small {
+    color: var(--steam-white);
+    opacity: 0.7;
+    font-family: 'Orbitron', sans-serif;
+}
+
+.city-exit {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 5001;
+}
+
+/* ========================================
+   МОДАЛЬНЫЕ ОКНА МАГАЗИНОВ
+======================================== */
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 6000;
+    animation: fadeIn 0.3s;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.shop-modal, .quest-modal {
+    background: linear-gradient(135deg, #2C2416, #1A1410);
+    border: 4px solid var(--copper);
+    border-radius: 20px;
+    max-width: 1000px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 0 50px rgba(184, 115, 51, 0.6);
+    animation: slideUp 0.4s;
+    margin: auto;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.shop-header {
+    background: linear-gradient(135deg, rgba(184, 115, 51, 0.3), transparent);
+    padding: 25px;
+    border-bottom: 2px solid var(--copper);
+    position: relative;
+}
+
+.shop-header h2 {
+    font-size: 36px;
+    color: var(--gear-gold);
+    text-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+    margin-bottom: 10px;
+}
+
+.shop-header p {
+    color: var(--brass);
+    font-size: 16px;
+    font-style: italic;
+}
+
+.player-gold {
+    position: absolute;
+    top: 25px;
+    right: 60px;
+    background: linear-gradient(135deg, #FFD700, #FFA500);
+    color: #000;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 18px;
+    font-family: 'Orbitron', sans-serif;
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+}
+
+.shop-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: rgba(255, 0, 0, 0.2);
+    border: 2px solid #ff0000;
+    color: #ff0000;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    font-size: 24px;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.shop-close:hover {
+    background: rgba(255, 0, 0, 0.4);
+    transform: rotate(90deg);
+}
+
+/* Товары в магазине */
+.shop-items, .shop-content {
+    padding: 25px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+.shop-item {
+    background: linear-gradient(135deg, rgba(44, 36, 22, 0.6), rgba(26, 20, 16, 0.6));
+    border: 2px solid var(--copper);
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    transition: all 0.3s;
+    position: relative;
+}
+
+.shop-item:hover:not(.owned):not(.locked) {
+    border-color: var(--gear-gold);
+    box-shadow: 0 5px 20px rgba(212, 175, 55, 0.4);
+    transform: translateY(-3px);
+}
+
+.shop-item.owned {
+    opacity: 0.6;
+    border-color: #27ae60;
+}
+
+.shop-item.locked {
+    opacity: 0.4;
+}
+
+.item-icon {
+    font-size: 50px;
+    text-align: center;
+    filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.3));
+}
+
+.item-info {
+    flex: 1;
+}
+
+.item-info h3, .item-info h4 {
+    font-size: 20px;
+    color: var(--gear-gold);
+    margin-bottom: 8px;
+}
+
+.item-info p {
+    color: var(--brass);
+    font-size: 14px;
+    line-height: 1.5;
+    margin-bottom: 10px;
+}
+
+.item-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 10px 0;
+}
+
+.item-stats span {
+    background: rgba(74, 144, 226, 0.2);
+    border: 1px solid #4A90E2;
+    color: #87CEEB;
+    padding: 4px 10px;
+    border-radius: 5px;
+    font-size: 12px;
+    font-family: 'Orbitron', sans-serif;
+}
+
+.item-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid rgba(184, 115, 51, 0.3);
+}
+
+.item-price {
+    font-size: 18px;
+    font-weight: bold;
+    color: #FFD700;
+    font-family: 'Orbitron', sans-serif;
+}
+
+.item-level {
+    color: var(--brass);
+    font-size: 14px;
+}
+
+.btn-buy, .btn-accept {
+    background: linear-gradient(135deg, var(--copper), var(--bronze));
+    border: 2px solid var(--gear-gold);
+    color: var(--steam-white);
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-family: 'Cinzel', serif;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.btn-buy:hover, .btn-accept:hover {
+    background: linear-gradient(135deg, var(--gear-gold), var(--copper));
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba(212, 175, 55, 0.5);
+}
+
+.btn-buy:active, .btn-accept:active {
+    transform: scale(0.98);
+}
+
+.item-owned, .item-locked {
+    text-align: center;
+    padding: 12px;
+    border-radius: 8px;
+    font-weight: bold;
+}
+
+.item-owned {
+    background: rgba(39, 174, 96, 0.2);
+    border: 2px solid #27ae60;
+    color: #2ecc71;
+}
+
+.item-locked {
+    background: rgba(100, 100, 100, 0.2);
+    border: 2px solid #666;
+    color: #999;
+    font-size: 24px;
+}
+
+/* ========================================
+   КВЕСТЫ
+======================================== */
+
+.quest-tabs {
+    display: flex;
+    background: rgba(0, 0, 0, 0.3);
+    border-bottom: 2px solid var(--copper);
+}
+
+.quest-tab {
+    flex: 1;
+    padding: 15px 20px;
+    background: transparent;
+    border: none;
+    color: var(--brass);
+    font-family: 'Cinzel', serif;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s;
+    border-bottom: 3px solid transparent;
+}
+
+.quest-tab:hover {
+    background: rgba(184, 115, 51, 0.1);
+    color: var(--gear-gold);
+}
+
+.quest-tab.active {
+    background: rgba(184, 115, 51, 0.2);
+    color: var(--gear-gold);
+    border-bottom-color: var(--gear-gold);
+}
+
+.quest-content {
+    padding: 25px;
+}
+
+.quest-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.quest-list.hidden {
+    display: none;
+}
+
+.no-quests {
+    text-align: center;
+    padding: 40px;
+    color: var(--brass);
+    font-size: 18px;
+    font-style: italic;
+}
+
+.quest-item {
+    background: linear-gradient(135deg, rgba(44, 36, 22, 0.6), rgba(26, 20, 16, 0.6));
+    border: 2px solid var(--copper);
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    transition: all 0.3s;
+}
+
+.quest-item:hover {
+    border-color: var(--gear-gold);
+    box-shadow: 0 5px 20px rgba(212, 175, 55, 0.3);
+}
+
+.quest-icon {
+    font-size: 50px;
+    filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.3));
+}
+
+.quest-info {
+    flex: 1;
+}
+
+.quest-info h3 {
+    font-size: 20px;
+    color: var(--gear-gold);
+    margin-bottom: 8px;
+}
+
+.quest-info p {
+    color: var(--brass);
+    margin-bottom: 12px;
+    line-height: 1.5;
+}
+
+.quest-rewards {
+    color: #2ecc71;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 14px;
+    margin-top: 8px;
+}
+
+.quest-progress-bar {
+    width: 100%;
+    height: 8px;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 4px;
+    overflow: hidden;
+    margin: 10px 0 5px;
+}
+
+.quest-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #2ecc71, #27ae60);
+    border-radius: 4px;
+    transition: width 0.5s;
+    box-shadow: 0 0 10px rgba(46, 204, 113, 0.6);
+}
+
+.quest-active {
+    background: rgba(52, 152, 219, 0.2);
+    border: 2px solid #3498db;
+    color: #3498db;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-weight: bold;
+    text-align: center;
+    white-space: nowrap;
+}
+
+/* ========================================
+   ТАВЕРНА
+======================================== */
+
+.tavern-content {
+    padding: 25px;
+}
+
+.tavern-section {
+    background: linear-gradient(135deg, rgba(44, 36, 22, 0.4), rgba(26, 20, 16, 0.4));
+    border: 2px solid var(--copper);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.tavern-section h3 {
+    font-size: 22px;
+    color: var(--gear-gold);
+    margin-bottom: 15px;
+}
+
+.rumor {
+    color: var(--brass);
+    font-style: italic;
+    padding: 15px;
+    background: rgba(0, 0, 0, 0.3);
+    border-left: 3px solid var(--gear-gold);
+    border-radius: 5px;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+
+.stat-item {
+    background: rgba(0, 0, 0, 0.3);
+    padding: 15px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.stat-label {
+    color: var(--brass);
+}
+
+.stat-value {
+    color: var(--gear-gold);
+    font-size: 20px;
+    font-weight: bold;
+    font-family: 'Orbitron', sans-serif;
+}
+
+.tavern-section .btn-steam {
+    width: 100%;
+    margin-top: 10px;
+}
+
+/* ========================================
+   ЛАВКА
+======================================== */
+
+.shop-section {
+    margin-bottom: 30px;
+}
+
+.shop-section h3 {
+    font-size: 24px;
+    color: var(--gear-gold);
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--copper);
+}
+
+.repair-section {
+    background: linear-gradient(135deg, rgba(44, 36, 22, 0.4), rgba(26, 20, 16, 0.4));
+    border: 2px solid var(--copper);
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+}
+
+.repair-section p {
+    color: var(--brass);
+    font-size: 18px;
+    margin-bottom: 15px;
+}
+
+/* ========================================
+   УВЕДОМЛЕНИЯ
+======================================== */
+
+.city-notification {
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(100px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* ========================================
+   ПРОГРЕССИЯ
+======================================== */
+
+.levelup-content, .quest-complete-content {
+    background: linear-gradient(135deg, #2C2416, #1A1410);
+    border: 4px solid var(--gear-gold);
+    border-radius: 20px;
+    padding: 40px;
+    text-align: center;
+    max-width: 500px;
+    box-shadow: 0 0 50px rgba(212, 175, 55, 0.8);
+    animation: slideUp 0.5s, glow 2s infinite;
+}
+
+@keyframes glow {
+    0%, 100% {
+        box-shadow: 0 0 50px rgba(212, 175, 55, 0.8);
+    }
+    50% {
+        box-shadow: 0 0 80px rgba(212, 175, 55, 1);
+    }
+}
+
+.levelup-content h1, .quest-complete-content h1 {
+    font-size: 42px;
+    color: var(--gear-gold);
+    margin-bottom: 20px;
+    text-shadow: 0 0 30px rgba(212, 175, 55, 1);
+    animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+.levelup-number {
+    font-size: 80px;
+    font-weight: bold;
+    color: var(--gear-gold);
+    margin: 20px 0;
+    text-shadow: 0 0 40px rgba(212, 175, 55, 1);
+    font-family: 'Orbitron', sans-serif;
+}
+
+.levelup-rewards, .quest-rewards {
+    background: rgba(0, 0, 0, 0.3);
+    border: 2px solid var(--copper);
+    border-radius: 10px;
+    padding: 20px;
+    margin: 20px 0;
+}
+
+.levelup-rewards h3, .quest-rewards h3 {
+    color: var(--gear-gold);
+    margin-bottom: 15px;
+}
+
+.reward-item {
+    color: var(--steam-white);
+    font-size: 18px;
+    margin: 10px 0;
+    padding: 10px;
+    background: rgba(46, 204, 113, 0.1);
+    border-left: 3px solid #2ecc71;
+    border-radius: 5px;
+}
+
+.quest-complete-content .quest-icon {
+    font-size: 80px;
+    margin: 20px 0;
+}
+
+.quest-complete-content h2 {
+    font-size: 28px;
+    color: var(--steam-white);
+    margin-bottom: 20px;
+}
+
+.quest-rewards div {
+    color: #2ecc71;
+    font-size: 18px;
+    margin: 8px 0;
+}
+
+/* ========================================
+   АДАПТИВНОСТЬ
+======================================== */
+
+@media (max-width: 768px) {
+    .city-locations {
+        grid-template-columns: 1fr;
+        padding: 20px;
+    }
+    
+    .shop-items, .shop-content {
+        grid-template-columns: 1fr;
+    }
+    
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .player-gold {
+        position: static;
+        margin: 10px 0;
+        display: inline-block;
+    }
+    
+    .levelup-number {
+        font-size: 60px;
+    }
+    
+    .city-welcome h1 {
+        font-size: 32px;
+    }
+    
+    .shop-header h2 {
+        font-size: 28px;
+    }
+}
+
+@media (max-width: 480px) {
+    .city-location {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .location-icon {
+        font-size: 50px;
+    }
+    
+    .quest-item {
+        flex-direction: column;
+    }
+    
+    .btn-buy, .btn-accept {
+        width: 100%;
+    }
+}
+
+/* ========================================
+   АНИМАЦИИ
+======================================== */
+
+@keyframes expPop {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.5);
+    }
+    20% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1.2);
+    }
+    80% {
+        opacity: 1;
+        transform: translate(-50%, -60%) scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: translate(-50%, -80%) scale(0.8);
+    }
+}
+
+@keyframes fadeOut {
+    to {
+        opacity: 0;
+    }
+}

@@ -1,0 +1,427 @@
+:root {
+    --copper: #B87333;
+    --brass: #C5A572;
+    --bronze: #CD7F32;
+    --steam-white: #F5F5DC;
+    --dark-metal: #2C2416;
+    --rust: #B7410E;
+    --gear-gold: #D4AF37;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Cinzel', serif;
+    overflow: hidden;
+    background: #0a0a0a;
+    color: var(--steam-white);
+}
+
+#game-container {
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* === ЗАГРУЗКА === */
+#loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #1a1410 0%, #2C2416 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+
+.loading-content {
+    text-align: center;
+    width: 400px;
+}
+
+.loading-content h1 {
+    font-size: 48px;
+    color: var(--gear-gold);
+    text-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+    margin-bottom: 30px;
+    letter-spacing: 8px;
+}
+
+.loading-bar {
+    width: 100%;
+    height: 30px;
+    background: rgba(0, 0, 0, 0.5);
+    border: 3px solid var(--copper);
+    border-radius: 15px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 
+        inset 0 0 10px rgba(0, 0, 0, 0.8),
+        0 0 20px rgba(184, 115, 51, 0.3);
+}
+
+.loading-progress {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, 
+        var(--copper) 0%, 
+        var(--gear-gold) 50%, 
+        var(--copper) 100%);
+    transition: width 0.3s ease;
+    box-shadow: 0 0 20px rgba(212, 175, 55, 0.8);
+    animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+    0%, 100% { opacity: 0.8; }
+    50% { opacity: 1; }
+}
+
+#loading-text {
+    margin-top: 20px;
+    color: var(--brass);
+    font-size: 16px;
+    font-family: 'Orbitron', sans-serif;
+}
+
+/* === ГЛАВНОЕ МЕНЮ === */
+#main-menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+        url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><rect fill="%23000" width="100" height="100"/><circle cx="50" cy="50" r="2" fill="%23333"/></svg>');
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    animation: fadeIn 1s;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.menu-container {
+    text-align: center;
+    background: linear-gradient(135deg, rgba(44, 36, 22, 0.95), rgba(26, 20, 16, 0.95));
+    padding: 60px 80px;
+    border-radius: 20px;
+    border: 4px solid var(--copper);
+    box-shadow: 
+        0 0 50px rgba(184, 115, 51, 0.5),
+        inset 0 0 30px rgba(0, 0, 0, 0.5);
+    position: relative;
+}
+
+.menu-container::before,
+.menu-container::after {
+    content: '⚙';
+    position: absolute;
+    font-size: 80px;
+    color: var(--gear-gold);
+    opacity: 0.2;
+    animation: rotate 20s linear infinite;
+}
+
+.menu-container::before {
+    top: -40px;
+    left: -40px;
+}
+
+.menu-container::after {
+    bottom: -40px;
+    right: -40px;
+    animation-direction: reverse;
+}
+
+@keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.game-title {
+    font-size: 72px;
+    color: var(--gear-gold);
+    text-shadow: 
+        0 0 30px rgba(212, 175, 55, 0.8),
+        0 0 60px rgba(212, 175, 55, 0.4);
+    margin-bottom: 10px;
+    letter-spacing: 12px;
+    position: relative;
+}
+
+.gear-left, .gear-right {
+    display: inline-block;
+    animation: rotate 10s linear infinite;
+}
+
+.gear-right {
+    animation-direction: reverse;
+}
+
+.menu-subtitle {
+    font-size: 18px;
+    color: var(--brass);
+    margin-bottom: 40px;
+    letter-spacing: 4px;
+    font-family: 'Orbitron', sans-serif;
+}
+
+.menu-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* === КНОПКИ В СТИЛЕ СТИМПАНК === */
+.btn-steam {
+    background: linear-gradient(135deg, var(--copper), var(--bronze));
+    border: 3px solid var(--gear-gold);
+    color: var(--steam-white);
+    padding: 18px 40px;
+    font-size: 20px;
+    font-family: 'Cinzel', serif;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s;
+    box-shadow: 
+        0 5px 15px rgba(0, 0, 0, 0.5),
+        inset 0 0 20px rgba(255, 255, 255, 0.1);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.btn-steam::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, 
+        transparent, 
+        rgba(255, 255, 255, 0.3), 
+        transparent);
+    transition: left 0.5s;
+}
+
+.btn-steam:hover {
+    transform: translateY(-3px);
+    box-shadow: 
+        0 8px 25px rgba(184, 115, 51, 0.6),
+        inset 0 0 30px rgba(255, 255, 255, 0.2);
+    border-color: var(--steam-white);
+}
+
+.btn-steam:hover::before {
+    left: 100%;
+}
+
+.btn-steam:active {
+    transform: translateY(0);
+}
+
+/* === ВЫБОР КОРАБЛЯ === */
+#ship-selection {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.95);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    overflow-y: auto;
+}
+
+.selection-container {
+    max-width: 1200px;
+    padding: 40px;
+}
+
+.selection-container h2 {
+    text-align: center;
+    font-size: 48px;
+    color: var(--gear-gold);
+    margin-bottom: 40px;
+    text-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+}
+
+.ships-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+    margin-bottom: 40px;
+}
+
+.ship-card {
+    background: linear-gradient(135deg, rgba(44, 36, 22, 0.9), rgba(26, 20, 16, 0.9));
+    border: 3px solid var(--copper);
+    border-radius: 15px;
+    padding: 30px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+}
+
+.ship-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, transparent, rgba(212, 175, 55, 0.1));
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.ship-card:hover:not(.locked) {
+    transform: translateY(-10px);
+    border-color: var(--gear-gold);
+    box-shadow: 0 10px 40px rgba(184, 115, 51, 0.6);
+}
+
+.ship-card:hover::before {
+    opacity: 1;
+}
+
+.ship-card.locked {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.ship-card.locked:hover {
+    transform: none;
+    border-color: var(--copper);
+}
+
+.ship-preview {
+    font-size: 80px;
+    margin-bottom: 20px;
+    filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.5));
+}
+
+.ship-card h3 {
+    font-size: 24px;
+    color: var(--gear-gold);
+    margin-bottom: 15px;
+}
+
+.ship-card p {
+    color: var(--brass);
+    margin: 5px 0;
+    font-family: 'Orbitron', sans-serif;
+}
+
+.selection-container > .btn-steam {
+    display: block;
+    margin: 0 auto;
+    width: fit-content;
+}
+
+/* === ПАУЗА === */
+#pause-menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+}
+
+.pause-container {
+    text-align: center;
+    background: linear-gradient(135deg, rgba(44, 36, 22, 0.95), rgba(26, 20, 16, 0.95));
+    padding: 50px 70px;
+    border-radius: 20px;
+    border: 4px solid var(--copper);
+    box-shadow: 0 0 50px rgba(184, 115, 51, 0.5);
+}
+
+.pause-container h2 {
+    font-size: 48px;
+    color: var(--gear-gold);
+    margin-bottom: 40px;
+    text-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+}
+
+.pause-container .btn-steam {
+    width: 100%;
+    margin: 10px 0;
+}
+
+/* === АДАПТИВНОСТЬ === */
+@media (max-width: 768px) {
+    .menu-container {
+        padding: 40px 30px;
+    }
+    
+    .game-title {
+        font-size: 48px;
+    }
+    
+    .menu-subtitle {
+        font-size: 14px;
+    }
+    
+    .btn-steam {
+        font-size: 16px;
+        padding: 14px 30px;
+    }
+    
+    .ships-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .selection-container {
+        padding: 20px;
+    }
+    
+    .selection-container h2 {
+        font-size: 32px;
+    }
+}
+
+@media (max-width: 480px) {
+    .loading-content {
+        width: 90%;
+    }
+    
+    .loading-content h1 {
+        font-size: 32px;
+    }
+    
+    .game-title {
+        font-size: 36px;
+        letter-spacing: 4px;
+    }
+}

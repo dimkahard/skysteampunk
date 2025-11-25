@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkyShips - Стимпанк Небесные Корабли MMO</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/ui.css">
+    <link rel="stylesheet" href="css/city.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Экран загрузки -->
+    <div id="loading-screen">
+        <div class="loading-content">
+            <h1>⚙ SKYSHIPS ⚙</h1>
+            <div class="loading-bar">
+                <div class="loading-progress" id="loading-progress"></div>
+            </div>
+            <p id="loading-text">Загрузка механизмов...</p>
+        </div>
+    </div>
+
+    <!-- Главное меню -->
+    <div id="main-menu" class="hidden">
+        <div class="menu-container">
+            <h1 class="game-title">
+                <span class="gear-left">⚙</span>
+                SKYSHIPS
+                <span class="gear-right">⚙</span>
+            </h1>
+            <div class="menu-subtitle">Небесные Стимпанк Корабли MMO</div>
+            
+            <div class="menu-buttons">
+                <button class="btn-steam" onclick="startGame()">
+                    <span>⚡ НАЧАТЬ ПОЛЁТ ⚡</span>
+                </button>
+                <button class="btn-steam" onclick="showShipSelection()">
+                    <span>🚢 ВЫБОР КОРАБЛЯ 🚢</span>
+                </button>
+                <button class="btn-steam" onclick="showSettings()">
+                    <span>⚙ НАСТРОЙКИ ⚙</span>
+                </button>
+                <button class="btn-steam" onclick="showControls()">
+                    <span>🎮 УПРАВЛЕНИЕ 🎮</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Экран выбора корабля -->
+    <div id="ship-selection" class="hidden">
+        <div class="selection-container">
+            <h2>⚓ ВЫБЕРИТЕ КОРАБЛЬ ⚓</h2>
+            <div class="ships-grid">
+                <!-- Генерируется динамически -->
+            </div>
+            <button class="btn-steam" onclick="hideShipSelection()">
+                <span>← НАЗАД</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Игровой UI -->
+    <div id="game-ui" class="hidden">
+        <!-- Верхняя панель -->
+        <div class="hud-top">
+            <div class="hud-panel steam-panel">
+                <div class="panel-title">⚙ СИСТЕМА ⚙</div>
+                <div class="stat-row">
+                    <span class="stat-label">Паровое давление:</span>
+                    <div class="steam-bar">
+                        <div class="steam-fill" id="steam-level"></div>
+                    </div>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Прочность корпуса:</span>
+                    <div class="health-bar">
+                        <div class="health-fill" id="health-level"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Боковая панель -->
+        <div class="hud-left">
+            <div class="hud-panel info-panel">
+                <div class="info-item">
+                    <span class="info-icon">🧭</span>
+                    <div class="info-data">
+                        <div class="info-label">Высота</div>
+                        <div class="info-value" id="altitude">0</div>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <span class="info-icon">⚡</span>
+                    <div class="info-data">
+                        <div class="info-label">Скорость</div>
+                        <div class="info-value" id="speed">0</div>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <span class="info-icon">🌡️</span>
+                    <div class="info-data">
+                        <div class="info-label">Температура</div>
+                        <div class="info-value" id="temperature">0°C</div>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <span class="info-icon">⭐</span>
+                    <div class="info-data">
+                        <div class="info-label">Уровень</div>
+                        <div class="info-value" id="player-level">1</div>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <span class="info-icon">💰</span>
+                    <div class="info-data">
+                        <div class="info-label">Золото</div>
+                        <div class="info-value" id="player-gold">0</div>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <span class="info-icon">☁️</span>
+                    <div class="info-data">
+                        <div class="info-label">Пушинки</div>
+                        <div class="info-value" id="fluff-count">0</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Правая панель -->
+        <div class="hud-right">
+            <div class="hud-panel mission-panel">
+                <div class="panel-title">📜 АКТИВНЫЕ КВЕСТЫ 📜</div>
+                <div id="active-quests-display">
+                    Нет активных квестов
+                </div>
+            </div>
+
+            <div class="hud-panel compass-panel">
+                <canvas id="compass" width="120" height="120"></canvas>
+            </div>
+            
+            <div class="hud-panel exp-panel">
+                <div class="exp-label">Опыт до уровня <span id="next-level">2</span></div>
+                <div class="exp-bar">
+                    <div class="exp-fill" id="exp-fill"></div>
+                </div>
+                <div class="exp-text"><span id="current-exp">0</span> / <span id="needed-exp">100</span></div>
+            </div>
+        </div>
+
+        <!-- Нижняя панель управления -->
+        <div class="hud-bottom">
+            <div class="controls-hint">
+                <span class="key-hint"><kbd>W/S</kbd> Газ/Тормоз</span>
+                <span class="key-hint"><kbd>A/D</kbd> Поворот</span>
+                <span class="key-hint"><kbd>SPACE</kbd> Турбо</span>
+                <span class="key-hint"><kbd>ESC</kbd> Меню</span>
+            </div>
+        </div>
+
+        <!-- Мини-карта -->
+        <div class="minimap-container">
+            <canvas id="minimap" width="200" height="200"></canvas>
+        </div>
+
+        <!-- Кроссхейр -->
+        <div class="crosshair">
+            <div class="crosshair-center"></div>
+            <div class="crosshair-line crosshair-top"></div>
+            <div class="crosshair-line crosshair-bottom"></div>
+            <div class="crosshair-line crosshair-left"></div>
+            <div class="crosshair-line crosshair-right"></div>
+        </div>
+    </div>
+
+    <!-- Пауза -->
+    <div id="pause-menu" class="hidden">
+        <div class="pause-container">
+            <h2>⚙ ПАУЗА ⚙</h2>
+            <button class="btn-steam" onclick="resumeGame()">
+                <span>▶ ПРОДОЛЖИТЬ</span>
+            </button>
+            <button class="btn-steam" onclick="restartGame()">
+                <span>🔄 НАЧАТЬ ЗАНОВО</span>
+            </button>
+            <button class="btn-steam" onclick="exitToMenu()">
+                <span>🏠 ГЛАВНОЕ МЕНЮ</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- 3D Canvas -->
+    <div id="game-container"></div>
+
+    <!-- Скрипты -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    
+    <!-- Новые системы -->
+    <script src="js/storage.js"></script>
+    <script src="js/progression.js"></script>
+    <script src="js/quests.js"></script>
+    <script src="js/economy.js"></script>
+    <script src="js/city.js"></script>
+    <script src="js/resources.js"></script>
+    
+    <!-- Основные модули -->
+    <script src="js/particles.js"></script>
+    <script src="js/ship.js"></script>
+    <script src="js/world.js"></script>
+    <script src="js/controls.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
